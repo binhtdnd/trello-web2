@@ -24,6 +24,7 @@ module.exports = {
     'react/prop-types':0,
     'react/display-name':0,
 
+    //common
     'no-console':1,
     'no-lonely-if':1,
     'no-unused-vars':1,
@@ -41,6 +42,15 @@ module.exports = {
     'keyword-spacing':1,
     'comma-dangle':1,
     'comma-spacing':1,
-    'arrow-spacing':1
+    'arrow-spacing':1,
+
+    //mui
+    'no-restricted-imports':[
+      'error',
+      {
+        'patterns':['@mui/*/*/*']
+      }
+    ]
+
   }
 }
