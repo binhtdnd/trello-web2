@@ -1,7 +1,3 @@
-import Button from '@mui/material/Button'
-
-import  Typography  from '@mui/material/Typography'
-
 import {
   useColorScheme
 } from '@mui/material/styles'
@@ -13,6 +9,8 @@ import Box from '@mui/material/Box';
 import LightModeIcon from '@mui/icons-material/LightMode'
 import  DarkModeOutLinedIcon  from '@mui/icons-material/DarkModeOutlined'
 import  SettingsBrightnessIcon  from '@mui/icons-material/SettingsBrightness'
+import  Container  from '@mui/material/Container'
+import theme from './theme'
 
 function ModeSelect() {
   const { mode, setMode } = useColorScheme()
@@ -32,52 +30,66 @@ function ModeSelect() {
         onChange={handleChange}
       >
         <MenuItem value="light">
-          <div style={{display:'flex',alignItems:'center',gap:'8px'}}>
+          <Box sx={{display:'flex',alignItems:'center',gap:'8px'}}>
           <LightModeIcon fontSize='small'/>  Light
-          </div>
+          </Box>
         </MenuItem>
         <MenuItem value="dark">
           <Box sx={{display:'flex',alignItems:'center',gap:'8px'}}>
-            <DarkModeOutLinedIcon />  Dark
+            <DarkModeOutLinedIcon  fontSize='small'/>  Dark
           </Box>
         </MenuItem>
         <MenuItem value="system">
-        <div style={{display:'flex',alignItems:'center' ,gap:1}}>
+          <Box sx={{display:'flex',alignItems:'center',gap:'8px'}}>
           <SettingsBrightnessIcon fontSize='small'/>  System
-          </div>
+          </Box>
         </MenuItem>
       </Select>
     </FormControl>
   );
 }
 
-function ModeToggle() {
-  const { mode, setMode } = useColorScheme();
-  return (
-    <Button
-      onClick={() => {
-        setMode(mode === 'light' ? 'dark' : 'light');
-      }}
-    >
-      {mode === 'light' ? 'Turn dark' : 'Turn light'}
-    </Button>
-  );
-}
+
 
 function App() {
   return (
-    <>
-    <ModeSelect/>
-    <hr></hr>
-    <ModeToggle/>
-    <hr></hr>
-    <div>BINH text containt outline</div>
-      <Typography variant='body2' color="text.secondary">asssssssssaaa</Typography>
+    <Container disableGutters maxWidth={false} sx={{height:'100vh'}}>
+    
+    <Box sx={{
+      backgroundColor:'primary.light',
+      width:'100%',
+      height:(theme)=>theme.trello.appBarHeight,
+      display:'flex',
+      alignItems:'center'
+    }}>
 
-      <Button variant="text">Text</Button>
-      <Button variant="contained">Contained</Button>
-      <Button variant="outlined">Outlined</Button>
-    </>
+      
+      <ModeSelect/>
+    </Box>
+
+    <Box sx={{
+      backgroundColor:'primary.dark',
+      width:'100%',
+      height:(theme)=>theme.trello.boardBarHeight,
+      display:'flex',
+      alignItems:'center'
+    }}>
+
+      
+      Board bar
+    </Box>
+
+    <Box sx={{
+      backgroundColor:'primary.main',
+      width:'100%',
+      height:`calc(100vh - ${theme.trello.appBarHeight} - ${theme.trello.boardBarHeight})`,
+      display:'flex',
+      alignItems:'center',
+      
+    }}>
+      Box container
+    </Box>
+    </Container>
   )
 }
 
