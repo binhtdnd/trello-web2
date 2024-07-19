@@ -1,4 +1,4 @@
-import react from "@vitejs/plugin-react-swc";
+
 
 module.exports = {
   root: true,
