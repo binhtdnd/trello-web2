@@ -34,9 +34,9 @@ function Profiles() {
           aria-expanded={open ? 'true' : undefined}
         >
           <Avatar
-            sx={{ width: 32, height: 32 }}
+            sx={{ width: 34, height: 34 }}
             alt='me'
-            src='https://scontent.fhan5-3.fna.fbcdn.net/v/t39.30808-1/442441572_1835179216990153_2266506822313899534_n.jpg?stp=dst-jpg_s200x200&_nc_cat=106&ccb=1-7&_nc_sid=0ecb9b&_nc_eui2=AeEgvTHdlpGpzT-VW_At8vQXMS5twybZcR8xLm3DJtlxH2ZVS_7nqJPzD5p3Wphx4JC2j_cCo3hwGVVa51mcbUkQ&_nc_ohc=cQetGi-Mh78Q7kNvgFbKmS1&_nc_ht=scontent.fhan5-3.fna&oh=00_AYBNN3zkeHySvOsU6fmEJ9SHDDX65vGWV49ZDH0-ZgCCoQ&oe=66A04664'
+            src='https://scontent.fhan5-3.fna.fbcdn.net/v/t39.30808-6/442441572_1835179216990153_2266506822313899534_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeEgvTHdlpGpzT-VW_At8vQXMS5twybZcR8xLm3DJtlxH2ZVS_7nqJPzD5p3Wphx4JC2j_cCo3hwGVVa51mcbUkQ&_nc_ohc=FHzHTMbQVdAQ7kNvgHWtM3v&_nc_ht=scontent.fhan5-3.fna&oh=00_AYBgvn83l3dlvx3fX_bjnp3CE1h-rc4PdbyDkw3tDLkYLg&oe=66A64622'
           />
         </IconButton>
       </Tooltip>
@@ -53,10 +53,10 @@ function Profiles() {
       >
 
         <MenuItem >
-          <Avatar sx={{ width: 28, height: 28, mr: 2 }} /> Profile
+          <Avatar sx={{ width: 34, height: 34, mr: 2 }} /> Profile
         </MenuItem>
         <MenuItem >
-          <Avatar sx={{ width: 28, height: 28, mr: 2 }} />  My account
+          <Avatar sx={{ width: 34, height: 34, mr: 2 }} />  My account
         </MenuItem>
         <Divider />
         <MenuItem >
