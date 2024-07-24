@@ -35,9 +35,11 @@ function BoardBar() {
       justifyContent: 'space-between',
       gap: 2,
       overflow: 'auto',
-      borderBottom: '1px solid white',
       px: 1,
-      bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#34495e' : '#1976d2')
+      bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#34495e' : '#1976d2'),
+      '&::-webkit-scrollbar-track': {
+        m: 2
+      }
     }}>
 
       <Box sx={{
@@ -100,7 +102,10 @@ function BoardBar() {
               width: 34,
               height: 34,
               fontSize: 16,
-              boder: 'none'
+              boder: 'none',
+              color: 'white',
+              cursor: 'pointer',
+              '&:first-of-type': { bgcolor: '#a4b0be' }
             }
           }}
         >
