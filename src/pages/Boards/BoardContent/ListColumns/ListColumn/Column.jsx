@@ -21,6 +21,11 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import ContentPaste from '@mui/icons-material/ContentPaste'
 import ListCards from './ListCards/ListCards'
 import { mapOrder } from '~/utils/sorts'
+
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
+import { ThumbUpAlt } from '@mui/icons-material'
+
 function Column({ column }) {
   // const COLUMN_CONTENT_HEIGHT = (theme) => theme.trello.boardContentHeight
   const [anchorEl, setAnchorEl] = useState(null)
@@ -28,9 +33,24 @@ function Column({ column }) {
   const handleClick = (event) => { setAnchorEl(event.currentTarget) }
   const handleClose = () => { setAnchorEl(null) }
 
+  // sort
   const orderedCards = mapOrder(column?.cards, column?.cardOrderIds, '_id')
+
+  // keo tha
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+    id: column._id,
+    data: { ...column }
+  })
+
+  const dndKitColumnStyles = {
+    touchAction: 'none',
+    transform: CSS.Translate.toString(transform),
+    transition
+  }
+
   return (
     <Box
+      ref={setNodeRef} style={dndKitColumnStyles} {...attributes} {...listeners}
       sx={{
         minWidth: '300px',
         maxWidth: '300px',
