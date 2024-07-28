@@ -1,4 +1,3 @@
-import { Margin } from '@mui/icons-material'
 import { experimental_extendTheme as extendTheme } from '@mui/material/styles'
 // import { teal, deepOrange, cyan, orange } from '@mui/material/colors'
 const APP_BAR_HEIGHT = '58px'
@@ -41,7 +40,7 @@ const theme = extendTheme({
           },
           '*::-webkit-scrollbar-track': {
             with: '8px',
-            height: '8px',
+            height: '8px'
             // backgroundColor: 'black',
           },
           '*::-webkit-scrollbar-thumb': {
