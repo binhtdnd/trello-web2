@@ -7,8 +7,6 @@ import Column from './ListColumns/ListColumn/Column'
 import Card from './ListColumns/ListColumn/ListCards/Card/Card'
 import {
   DndContext,
-  PointerSensor,
-  // KeyboardSensor,
   MouseSensor,
   TouchSensor,
   useSensor,
@@ -17,12 +15,15 @@ import {
   defaultDropAnimationSideEffects,
   closestCorners
 } from '@dnd-kit/core'
+import { cloneDeep, isEmpty } from 'lodash'
+import { generatePlaceholderCard } from '~/utils/formatter'
+
 
 const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: 'ACTIVE_DRAG_ITEM_TYPE_COLUMN',
   CARD: 'ACTIVE_DRAG_ITEM_TYPE_CARD'
 }
-import { cloneDeep } from 'lodash'
+
 
 function BoardContent({ board }) {
 
@@ -46,6 +47,64 @@ function BoardContent({ board }) {
     return orderedColumns.find(column => column?.cards?.map(card => card._id)?.includes(cardId))
   }
 
+  const moveCardBetweenDifferentColumns = (
+    overColumn,
+    overCardId,
+    active,
+    over,
+    activeColumn,
+    activeDraggingCardId,
+    activeDraggingCardIdData
+  ) => {
+    // if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN || ) {
+    //   console.log('data: ,', activeDraggingCardIdData?.FE_PlaceholderCard)
+    // }
+    setOrderedColumns(prevColumns => {
+      const overCardIndex = overColumn?.cards?.findIndex(card => card._id === overCardId)
+      // console.log('over index: ', overCardIndex)
+      let newCardIndex
+      const isBelowOverItem = active.rect.current.translated &&
+        active.rect.current.translated.top > over.rect.top + over.rect.height
+      const modifier = isBelowOverItem ? 1 : 0
+      newCardIndex = overCardIndex >= 0 ? overCardIndex + modifier : overColumn?.cards?.length + 1
+
+      const nextColumns = cloneDeep(prevColumns)
+      const nextActiveColumn = nextColumns.find(column => column._id === activeColumn._id)
+      const nextOverColumn = nextColumns.find(column => column._id === overColumn._id)
+
+      if (nextActiveColumn) {
+        // xoa card dang keo
+        nextActiveColumn.cards = nextActiveColumn.cards.filter(card => card._id !== activeDraggingCardId)
+
+        // them place holder card
+        if (isEmpty(nextActiveColumn.cards)) {
+          nextActiveColumn.cards = [generatePlaceholderCard(nextActiveColumn)]
+        }
+        // cap nhat lai mang cardOrderIds
+        nextActiveColumn.cardOrderIds = nextActiveColumn.cards.map(card => card._id)
+      }
+
+      if (nextOverColumn) {
+        nextOverColumn.cards = nextOverColumn.cards.filter(card => card._id !== activeDraggingCardId)
+
+        // update lai columnId cho card sau khi card nhay vao column moi
+        const rebuild_activeDragingCardData = {
+          ...activeDraggingCardIdData,
+          columnId: nextOverColumn._id
+        }
+
+        nextOverColumn.cards = nextOverColumn.cards.toSpliced(newCardIndex, 0, rebuild_activeDragingCardData)
+
+        // xoa holder khi column sap co them card chuan?
+        nextOverColumn.cards = nextOverColumn.cards = nextOverColumn.cards.filter(card => !card.FE_PlaceholderCard)
+
+        nextOverColumn.cardOrderIds = nextOverColumn.cards.map(card => card._id)
+
+      }
+      return [...nextColumns]//console.log('over card id: ',overCardIndex)
+    })
+  }
+
   const handleDragStart = (event) => {
     // console.log('DragStart', event)
     setActiveDragItemId(event?.active?.id)
@@ -65,7 +124,6 @@ function BoardContent({ board }) {
     // console.log('DragOver', event)
     const { active, over } = event
     if (!over || !active) return
-
     const { id: activeDraggingCardId, data: { current: activeDraggingCardIdData } } = active
     const { id: overCardId } = over
 
@@ -77,32 +135,15 @@ function BoardContent({ board }) {
     if (!activeColumn || !overColumn) return
 
     if (activeColumn._id !== overColumn._id) {
-      setOrderedColumns(prevColumns => {
-        const overCardIndex = overColumn?.cards?.findIndex(card => card._id === overCardId)
-        // console.log('over index: ', overCardIndex)
-        let newCardIndex
-        const isBelowOverItem = active.rect.current.translated &&
-          active.rect.current.translated.top > over.rect.top + over.rect.height
-        const modifier = isBelowOverItem ? 1 : 0
-        newCardIndex = overCardIndex >= 0 ? overCardIndex + modifier : overColumn?.cards?.length + 1
-
-        const nextColumns = cloneDeep(prevColumns)
-        const nextActiveColumn = nextColumns.find(column => column._id === activeColumn._id)
-        const nextOverColumn = nextColumns.find(column => column._id === overColumn._id)
-
-        if (nextActiveColumn) {
-          nextActiveColumn.cards = nextActiveColumn.cards.filter(card => card._id !== activeDraggingCardId)
-          nextActiveColumn.cardOrderIds = nextActiveColumn.cards.map(card => card._id)
-        }
-
-        if (nextOverColumn) {
-          nextOverColumn.cards = nextOverColumn.cards.filter(card => card._id !== activeDraggingCardId)
-
-          nextOverColumn.cards = nextOverColumn.cards.toSpliced(newCardIndex, 0, activeDragItemData)
-          nextOverColumn.cardOrderIds = nextOverColumn.cards.map(card => card._id)
-        }
-        return [...nextColumns]//console.log('over card id: ',overCardIndex)
-      })
+      moveCardBetweenDifferentColumns(
+        overColumn,
+        overCardId,
+        active,
+        over,
+        activeColumn,
+        activeDraggingCardId,
+        activeDraggingCardIdData
+      )
     }
   }
 
@@ -121,7 +162,15 @@ function BoardContent({ board }) {
 
       // keo tha card
       if (oldColumnWhenDraggingCard._id !== overColumn._id) {
-        // console.log('khacs')
+        moveCardBetweenDifferentColumns(
+          overColumn,
+          overCardId,
+          active,
+          over,
+          activeColumn,
+          activeDraggingCardId,
+          activeDraggingCardIdData
+        )
       } else {
 
         // console.log('DragEnd', event)
@@ -176,6 +225,9 @@ function BoardContent({ board }) {
       }
     })
   }
+
+  // video 37
+
 
   return (
     <DndContext

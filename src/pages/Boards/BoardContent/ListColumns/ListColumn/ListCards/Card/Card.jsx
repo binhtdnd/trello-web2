@@ -33,7 +33,11 @@ function Card({ card }) {
       sx={{
         cursor: 'pointer',
         boxShadow: '0 1px 1px rgba(0, 0, 0, 0.2)',
-        overflow: 'unset'
+        overflow: 'unset',
+        // opacity: card?.FE_PlaceholderCard ? '0' : '1',
+        height: card?.FE_PlaceholderCard ? '0px' : 'unset',
+
+        pointerEvents: card?.FE_PlaceholderCard ? 'none' : 'initial'
       }}
     >
       {card?.cover &&
@@ -48,7 +52,8 @@ function Card({ card }) {
           {card?.title}
         </Typography>
       </CardContent>
-      {shouldShowCardAction() &&
+      {
+        shouldShowCardAction() &&
         <CardActions sx={{ p: '0 4px 8px 4px' }}>
           {!!card?.memberIds?.length &&
             <Button size="small" startIcon={<GroupIcon />}>{card.memberIds.length}</Button>
@@ -64,7 +69,7 @@ function Card({ card }) {
         </CardActions>
       }
 
-    </MuiCard>
+    </MuiCard >
   )
 }
 
