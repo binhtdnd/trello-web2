@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography'
 import { Card as MuiCard } from '@mui/material'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
+import theme from '~/theme'
 function Card({ card }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: card._id,
@@ -35,9 +36,11 @@ function Card({ card }) {
         boxShadow: '0 1px 1px rgba(0, 0, 0, 0.2)',
         overflow: 'unset',
         // opacity: card?.FE_PlaceholderCard ? '0' : '1',
-        height: card?.FE_PlaceholderCard ? '0px' : 'unset',
-
-        pointerEvents: card?.FE_PlaceholderCard ? 'none' : 'initial'
+        // height: card?.FE_PlaceholderCard ? '0px' : 'unset',
+        dispaly: card?.FE_PlaceholderCard ? 'none' : 'block',
+        border: '1px solid transparent',
+        pointerEvents: card?.FE_PlaceholderCard ? 'none' : 'initial',
+        '&:hover': { borderColor: (theme) => theme.palette.primary.main }
       }}
     >
       {card?.cover &&
