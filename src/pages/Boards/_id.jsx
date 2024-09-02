@@ -11,10 +11,11 @@ function Board() {
   const [board, setBoard] = useState(null)
 
   useEffect(() => {
-    const boardId = '66d488493c0462e2b59c4afe'
+    const boardId = '66d602a54f9b70a757a7f2e6'
 
     fetchBoardDetailsAPI(boardId).then(board => {
       setBoard(board)
+
     })
   }, [])
 
