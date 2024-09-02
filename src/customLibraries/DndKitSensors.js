@@ -12,7 +12,6 @@ const handler = ({ nativeEvent: event }) => {
     }
     cur = cur.parentElement
   }
-
   return true
 }
 

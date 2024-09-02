@@ -28,6 +28,8 @@ import { CSS } from '@dnd-kit/utilities'
 import TextField from '@mui/material/TextField'
 import CloseIcon from '@mui/icons-material/Close'
 
+import { toast } from 'react-toastify'
+
 function Column({ column }) {
   // const COLUMN_CONTENT_HEIGHT = (theme) => theme.trello.boardContentHeight
   const [anchorEl, setAnchorEl] = useState(null)
@@ -59,7 +61,7 @@ function Column({ column }) {
 
   const addNewCard = () => {
     if (!newCardTitle) {
-      // console.error('nhap title di pro')
+      toast.error('Please enter Card title', { position: 'bottom-right' })
       return
     }
 
