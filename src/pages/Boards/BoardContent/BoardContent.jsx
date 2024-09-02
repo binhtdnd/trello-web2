@@ -7,8 +7,6 @@ import Column from './ListColumns/ListColumn/Column'
 import Card from './ListColumns/ListColumn/ListCards/Card/Card'
 import {
   DndContext,
-  MouseSensor,
-  TouchSensor,
   useSensor,
   useSensors,
   DragOverlay,
@@ -18,6 +16,10 @@ import {
 import { cloneDeep, isEmpty } from 'lodash'
 import { generatePlaceholderCard } from '~/utils/formatter'
 
+import {
+  MouseSensor,
+  TouchSensor
+} from '~/customLibraries/DndKitSensors'
 
 const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: 'ACTIVE_DRAG_ITEM_TYPE_COLUMN',
