@@ -30,7 +30,7 @@ import CloseIcon from '@mui/icons-material/Close'
 
 import { toast } from 'react-toastify'
 
-function Column({ column }) {
+function Column({ column, createNewCard }) {
   // const COLUMN_CONTENT_HEIGHT = (theme) => theme.trello.boardContentHeight
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
@@ -59,13 +59,18 @@ function Column({ column }) {
   const toggleOpenNewCardForm = () => setOpenNewCardForm(!openNewCardForm)
   const [newCardTitle, setNewCardTitle] = useState('')
 
-  const addNewCard = () => {
+  const addNewCard = async () => {
     if (!newCardTitle) {
       toast.error('Please enter Card title', { position: 'bottom-right' })
       return
     }
 
-    //call api
+    const newCardData = {
+      title: newCardTitle,
+      columnId: column._id
+    }
+    await createNewCard(newCardData)
+
     toggleOpenNewCardForm()
     setNewCardTitle('')
   }

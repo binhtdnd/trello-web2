@@ -4,14 +4,14 @@ import BoardBar from './BoardBar/BoardBar'
 import BoardContent from './BoardContent/BoardContent'
 // import { mockData } from '~/apis/mock-data'
 import { useEffect, useState } from 'react'
-import { fetchBoardDetailsAPI } from '~/apis'
+import { fetchBoardDetailsAPI, createNewColumnAPI, createNewCardAPI } from '~/apis'
 
 function Board() {
 
   const [board, setBoard] = useState(null)
 
   useEffect(() => {
-    const boardId = '66d602a54f9b70a757a7f2e6'
+    const boardId = '66d725f196702cd492ad554f'
 
     fetchBoardDetailsAPI(boardId).then(board => {
       setBoard(board)
@@ -19,12 +19,35 @@ function Board() {
     })
   }, [])
 
+  //goij api tao moi Column va lam lai du lieu  State board
+  const createNewColumn = async (newColumnData) => {
+    const createdColumn = await createNewColumnAPI({
+      ...newColumnData,
+      boardId: board._id
+    })
+
+    //cap nhat lai state board
+  }
+
+  const createNewCard = async (newCardData) => {
+    const createdCard = await createNewCardAPI({
+      ...newCardData,
+      boardId: board._id
+    })
+
+    //cap nhat lai state board
+  }
+
   return (
     <Container disableGutters maxWidth={false} sx={{ height: '100vh' }}>
 
       <AppBar />
       <BoardBar board={board} />
-      <BoardContent board={board} />
+      <BoardContent
+        board={board}
+        createNewColumn={createNewColumn}
+        createNewCard={createNewCard}
+      />
     </Container>
   )
 }
