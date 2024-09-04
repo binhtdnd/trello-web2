@@ -2,20 +2,33 @@ import Container from '@mui/material/Container'
 import AppBar from '~/components/AppBar/AppBar'
 import BoardBar from './BoardBar/BoardBar'
 import BoardContent from './BoardContent/BoardContent'
-// import { mockData } from '~/apis/mock-data'
+import { mockData } from '~/apis/mock-data'
 import { useEffect, useState } from 'react'
-import { fetchBoardDetailsAPI, createNewColumnAPI, createNewCardAPI } from '~/apis'
+import { fetchBoardDetailsAPI, createNewColumnAPI, createNewCardAPI, updateBoardDetailsAPI } from '~/apis'
+import { hardBoardId } from '~/utils/constants'
+
+import { generatePlaceholderCard } from '~/utils/formatter'
+import { isEmpty } from 'lodash'
 
 function Board() {
 
   const [board, setBoard] = useState(null)
 
   useEffect(() => {
-    const boardId = '66d725f196702cd492ad554f'
+    const boardId = hardBoardId
 
     fetchBoardDetailsAPI(boardId).then(board => {
-      setBoard(board)
 
+      board.columns.forEach(column => {
+        if (isEmpty(column.cards)) {
+
+          column.cards = [generatePlaceholderCard(column)]
+          column.cardOrderIds = [generatePlaceholderCard(column)._id]
+
+        }
+      })
+
+      setBoard(board)
     })
   }, [])
 
@@ -25,8 +38,13 @@ function Board() {
       ...newColumnData,
       boardId: board._id
     })
+    createdColumn.cards = [generatePlaceholderCard(createdColumn)]
+    createdColumn.cardOrderIds = [generatePlaceholderCard(createdColumn)._id]
 
-    //cap nhat lai state board
+    const newBoard = { ...board }
+    newBoard.columns.push(createdColumn)
+    newBoard.columnOrderIds.push(createdColumn._id)
+    setBoard(newBoard)
   }
 
   const createNewCard = async (newCardData) => {
@@ -35,7 +53,26 @@ function Board() {
       boardId: board._id
     })
 
-    //cap nhat lai state board
+    const newBoard = { ...board }
+    const columnToUpdate = newBoard.columns.find(column => column._id === createdCard.columnId)
+    if (columnToUpdate) {
+      columnToUpdate.cards.push(createdCard)
+      columnToUpdate.cardOrderIds.push(createNewCard._id)
+    }
+    setBoard(newBoard)
+  }
+
+  // goi aoi khi keo tha xong
+  const moveColumns = async (dndOrderedColumns) => {
+
+    const dndOrderedColumnsIds = dndOrderedColumns.map(c => c._id)
+
+    const newBoard = { ...board }
+    newBoard.columns = dndOrderedColumns
+    newBoard.columnOrderIds = dndOrderedColumnsIds
+    setBoard(newBoard)
+
+    await updateBoardDetailsAPI(newBoard._id, { columnOrderIds: dndOrderedColumnsIds })
   }
 
   return (
@@ -47,6 +84,7 @@ function Board() {
         board={board}
         createNewColumn={createNewColumn}
         createNewCard={createNewCard}
+        moveColumns={moveColumns}
       />
     </Container>
   )

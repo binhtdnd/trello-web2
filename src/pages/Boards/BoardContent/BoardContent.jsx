@@ -27,7 +27,7 @@ const ACTIVE_DRAG_ITEM_TYPE = {
 }
 
 
-function BoardContent({ board, createNewColumn, createNewCard }) {
+function BoardContent({ board, createNewColumn, createNewCard, moveColumns }) {
 
   // const pointerSensor = useSensor(PointerSensor, { activationConstraint: { distance: 10 } })
   const mouseSensor = useSensor(MouseSensor, { activationConstraint: { distance: 10 } })
@@ -150,8 +150,12 @@ function BoardContent({ board, createNewColumn, createNewCard }) {
   }
 
   const handleDragEnd = (event) => {
+
     const { active, over } = event
+
     if (!over || !active) return
+
+    //keo tha card
     if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD) {
       const { id: activeDraggingCardId, data: { current: activeDraggingCardIdData } } = active
       const { id: overCardId } = over
@@ -206,6 +210,7 @@ function BoardContent({ board, createNewColumn, createNewCard }) {
 
         // api update to database
         // const dndOrderedColumnsIds = dndOrderedColumns.map(c => c.id)
+        moveColumns(dndOrderedColumns)
 
         setOrderedColumns(dndOrderedColumns)
       }

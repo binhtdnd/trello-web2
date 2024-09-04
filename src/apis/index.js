@@ -8,6 +8,11 @@ export const fetchBoardDetailsAPI = async (boardId) => {
   return response.data
 }
 
+export const updateBoardDetailsAPI = async (boardId, updateData) => {
+  const response = await axios.put(`${API_ROOT}/v1/boards/${boardId}`, updateData)
+  return response.data
+}
+
 
 // Column
 export const createNewColumnAPI = async (newColumndData) => {
@@ -20,3 +25,4 @@ export const createNewCardAPI = async (newCardData) => {
   const response = await axios.post(`${API_ROOT}/v1/cards`, newCardData)
   return response.data
 }
+

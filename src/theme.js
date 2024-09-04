@@ -34,15 +34,16 @@ const theme = extendTheme({
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          '*::-webkit-scrollbar': {
-            with: '8px',
-            height: '8px'
-          },
-          '*::-webkit-scrollbar-track': {
-            with: '8px',
-            height: '8px'
-            // backgroundColor: 'black',
-          },
+          // '*::-webkit-scrollbar': {
+          //   with: '8px',
+          //   height: '8px'
+          //   // display: 'none'
+          // },
+          // '*::-webkit-scrollbar-track': {
+          //   with: '8px',
+          //   height: '8px'
+          //   // backgroundColor: 'black',
+          // },
           '*::-webkit-scrollbar-thumb': {
             backgroundColor: '#bdc3c7',
             // backgroundColor: 'black',
