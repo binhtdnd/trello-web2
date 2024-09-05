@@ -2,13 +2,13 @@ import Container from '@mui/material/Container'
 import AppBar from '~/components/AppBar/AppBar'
 import BoardBar from './BoardBar/BoardBar'
 import BoardContent from './BoardContent/BoardContent'
-import { mockData } from '~/apis/mock-data'
+// import { mockData } from '~/apis/mock-data'
 import { useEffect, useState } from 'react'
 import {
   fetchBoardDetailsAPI, createNewColumnAPI, createNewCardAPI,
   updateBoardDetailsAPI,
-  updateColumnDetailsAPI
-
+  updateColumnDetailsAPI,
+  moveCardToDifferentColumnAPI
 } from '~/apis'
 import { hardBoardId } from '~/utils/constants'
 
@@ -105,6 +105,26 @@ function Board() {
     updateColumnDetailsAPI(columnId, { cardOrderIds: dndOrderedCardIds, cards: dndOrderedCards })
   }
 
+  const moveCardToTheDifferentColumn = (currentCardId, prevColumnId, nextColumnId, dndOrderedColumns) => {
+
+    const dndOrderedColumnsIds = dndOrderedColumns.map(c => c._id)
+
+    const newBoard = { ...board }
+    newBoard.columns = dndOrderedColumns
+    newBoard.columnOrderIds = dndOrderedColumnsIds
+    setBoard(newBoard)
+
+    // goi api
+    moveCardToDifferentColumnAPI({
+      currentCardId,
+      prevColumnId,
+      prevCardOrderIds: dndOrderedColumns.find(c => c._id === prevColumnId)?.cardOrderIds,
+      nextColumnId,
+      nextCardOrderIds: dndOrderedColumns.find(c => c._id === nextColumnId)?.cardOrderIds
+    })
+  }
+
+
   return (
     <Container disableGutters maxWidth={false} sx={{ height: '100vh' }}>
 
@@ -116,6 +136,7 @@ function Board() {
         createNewCard={createNewCard}
         moveColumns={moveColumns}
         moveCardInTheSameColumn={moveCardInTheSameColumn}
+        moveCardToTheDifferentColumn={moveCardToTheDifferentColumn}
       />
     </Container>
   )

@@ -27,7 +27,10 @@ const ACTIVE_DRAG_ITEM_TYPE = {
 }
 
 
-function BoardContent({ board, createNewColumn, createNewCard, moveColumns, moveCardInTheSameColumn }) {
+function BoardContent({ board, createNewColumn, createNewCard, moveColumns,
+  moveCardInTheSameColumn,
+  moveCardToTheDifferentColumn
+}) {
 
   // const pointerSensor = useSensor(PointerSensor, { activationConstraint: { distance: 10 } })
   const mouseSensor = useSensor(MouseSensor, { activationConstraint: { distance: 10 } })
@@ -48,7 +51,7 @@ function BoardContent({ board, createNewColumn, createNewCard, moveColumns, move
   const findColumnByCardId = (cardId) => {
     return orderedColumns.find(column => column?.cards?.map(card => card._id)?.includes(cardId))
   }
-
+  //khoi tao 
   const moveCardBetweenDifferentColumns = (
     overColumn,
     overCardId,
@@ -56,7 +59,8 @@ function BoardContent({ board, createNewColumn, createNewCard, moveColumns, move
     over,
     activeColumn,
     activeDraggingCardId,
-    activeDraggingCardIdData
+    activeDraggingCardIdData,
+    triggerFrom
   ) => {
     // if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN || ) {
     //   console.log('data: ,', activeDraggingCardIdData?.FE_PlaceholderCard)
@@ -103,6 +107,15 @@ function BoardContent({ board, createNewColumn, createNewCard, moveColumns, move
         nextOverColumn.cardOrderIds = nextOverColumn.cards.map(card => card._id)
 
       }
+      //neu dc goi tu func handleDrangeEnd
+      if (triggerFrom === 'handleDragEnd') {
+        moveCardToTheDifferentColumn(
+          activeDraggingCardId,
+          oldColumnWhenDraggingCard._id,
+          nextOverColumn._id,
+          nextColumns
+        )
+      }
       return [...nextColumns]//console.log('over card id: ',overCardIndex)
     })
   }
@@ -144,7 +157,8 @@ function BoardContent({ board, createNewColumn, createNewCard, moveColumns, move
         over,
         activeColumn,
         activeDraggingCardId,
-        activeDraggingCardIdData
+        activeDraggingCardIdData,
+        'handleDragOver'
       )
     }
   }
@@ -176,7 +190,8 @@ function BoardContent({ board, createNewColumn, createNewCard, moveColumns, move
           over,
           activeColumn,
           activeDraggingCardId,
-          activeDraggingCardIdData
+          activeDraggingCardIdData,
+          'handleDragEnd'
         )
       } else {
 
