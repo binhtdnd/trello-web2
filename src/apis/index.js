@@ -1,15 +1,17 @@
 import axios from 'axios'
-import Column from '~/pages/Boards/BoardContent/ListColumns/ListColumn/Column'
+// import Column from '~/pages/Boards/BoardContent/ListColumns/ListColumn/Column'
 import { API_ROOT } from '~/utils/constants'
 
 // board
 export const fetchBoardDetailsAPI = async (boardId) => {
   const response = await axios.get(`${API_ROOT}/v1/boards/${boardId}`)
+
   return response.data
 }
 
 export const updateBoardDetailsAPI = async (boardId, updateData) => {
   const response = await axios.put(`${API_ROOT}/v1/boards/${boardId}`, updateData)
+  // console.log('cardOrderIds: ', response.columns[0].cardOrderIds)
   return response.data
 }
 
@@ -17,6 +19,11 @@ export const updateBoardDetailsAPI = async (boardId, updateData) => {
 // Column
 export const createNewColumnAPI = async (newColumndData) => {
   const response = await axios.post(`${API_ROOT}/v1/columns`, newColumndData)
+  return response.data
+}
+
+export const updateColumnDetailsAPI = async (columnId, updateData) => {
+  const response = await axios.put(`${API_ROOT}/v1/columns/${columnId}`, updateData)
   return response.data
 }
 

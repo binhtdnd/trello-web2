@@ -27,7 +27,7 @@ const ACTIVE_DRAG_ITEM_TYPE = {
 }
 
 
-function BoardContent({ board, createNewColumn, createNewCard, moveColumns }) {
+function BoardContent({ board, createNewColumn, createNewCard, moveColumns, moveCardInTheSameColumn }) {
 
   // const pointerSensor = useSensor(PointerSensor, { activationConstraint: { distance: 10 } })
   const mouseSensor = useSensor(MouseSensor, { activationConstraint: { distance: 10 } })
@@ -156,6 +156,7 @@ function BoardContent({ board, createNewColumn, createNewCard, moveColumns }) {
     if (!over || !active) return
 
     //keo tha card
+    //khac column
     if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD) {
       const { id: activeDraggingCardId, data: { current: activeDraggingCardIdData } } = active
       const { id: overCardId } = over
@@ -179,21 +180,29 @@ function BoardContent({ board, createNewColumn, createNewCard, moveColumns }) {
         )
       } else {
 
+        //keo tha cung column
         // console.log('DragEnd', event)
         // lay vi tri cu tu thang active
         const oldCardIndex = oldColumnWhenDraggingCard?.cards?.findIndex(c => c._id === activeDragItemId)
         // lay vi tri moi tu thang over
+
         const newCardIndex = overColumn?.cards?.findIndex(c => c._id === overCardId)
 
         const dndOrderedCards = arrayMove(oldColumnWhenDraggingCard.cards, oldCardIndex, newCardIndex)
-
+        const dndOrderedCardIds = dndOrderedCards.map(card => card._id)
         setOrderedColumns(prevColumns => {
+          //clone
           const nextColumns = cloneDeep(prevColumns)
+          //tim noi tha?
           const targetColumn = nextColumns.find(column => column._id === overColumn._id)
+          // update data
           targetColumn.cards = dndOrderedCards
-          targetColumn.cardOrderIds = dndOrderedCards.map(card => card._id)
+          targetColumn.cardOrderIds = dndOrderedCardIds
           return nextColumns
         })
+        // console.log('a dndOrderedCards: ', dndOrderedCards)
+        // console.log('a dndOrderedCardIds: ', dndOrderedCardIds)
+        moveCardInTheSameColumn(dndOrderedCards, dndOrderedCardIds, oldColumnWhenDraggingCard._id)
       }
     }
     // keo column, sap xep thu tu cac column
@@ -210,9 +219,10 @@ function BoardContent({ board, createNewColumn, createNewCard, moveColumns }) {
 
         // api update to database
         // const dndOrderedColumnsIds = dndOrderedColumns.map(c => c.id)
-        moveColumns(dndOrderedColumns)
+
 
         setOrderedColumns(dndOrderedColumns)
+        moveColumns(dndOrderedColumns)
       }
 
     }
