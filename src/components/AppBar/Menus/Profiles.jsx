@@ -36,7 +36,7 @@ function Profiles() {
           <Avatar
             sx={{ width: 34, height: 34 }}
             alt='me'
-            src='https://scontent.fhan15-1.fna.fbcdn.net/v/t39.30808-1/442441572_1835179216990153_2266506822313899534_n.jpg?stp=dst-jpg_s200x200&_nc_cat=106&ccb=1-7&_nc_sid=0ecb9b&_nc_eui2=AeEgvTHdlpGpzT-VW_At8vQXMS5twybZcR8xLm3DJtlxH2ZVS_7nqJPzD5p3Wphx4JC2j_cCo3hwGVVa51mcbUkQ&_nc_ohc=TQq22x-aeMIQ7kNvgEo5yM_&_nc_ht=scontent.fhan15-1.fna&oh=00_AYAKmRnRudHQV9W0SxD73isaKDjylSig8xPq4t66hEz3lg&oe=66D92F24'
+            src=''
           />
         </IconButton>
       </Tooltip>

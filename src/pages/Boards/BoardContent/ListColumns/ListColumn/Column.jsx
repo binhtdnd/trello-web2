@@ -235,7 +235,7 @@ function Column({ column, createNewCard, deleteColumnDetails }) {
               alignItems: 'center',
               justifyContent: 'space-between'
             }}>
-              <Button data-no-dnd='true' startIcon={<AddcardIcon />} onClick={toggleOpenNewCardForm}>
+              <Button data-no-dnd='true' onClick={toggleOpenNewCardForm}>
                 Add new card
               </Button>
 
