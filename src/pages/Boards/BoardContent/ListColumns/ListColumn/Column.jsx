@@ -11,7 +11,7 @@ import Divider from '@mui/material/Divider'
 import ListItemText from '@mui/material/ListItemText'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import Tooltip from '@mui/material/Tooltip'
-import AddcardIcon from '@mui/icons-material/Addcard'
+// import AddcardIcon from '@mui/icons-material/Addcard'
 import ContentCut from '@mui/icons-material/ContentCut'
 import ContentCopy from '@mui/icons-material/ContentCopy'
 import DragHandleIcon from '@mui/icons-material/DragHandle'
@@ -167,7 +167,7 @@ function Column({ column, createNewCard, deleteColumnDetails }) {
                   }
                 }}
               >
-                <ListItemIcon><AddcardIcon className='add-card-icon' fontSize="small" /></ListItemIcon>
+                {/* <ListItemIcon><AddcardIcon className='add-card-icon' fontSize="small" /></ListItemIcon> */}
                 <ListItemText>Add New Card</ListItemText>
               </MenuItem>
 
