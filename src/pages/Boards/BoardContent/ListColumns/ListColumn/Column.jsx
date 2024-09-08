@@ -31,8 +31,6 @@ import CloseIcon from '@mui/icons-material/Close'
 import { toast } from 'react-toastify'
 import { useConfirm } from 'material-ui-confirm'
 
-
-
 function Column({ column, createNewCard, deleteColumnDetails }) {
   // const COLUMN_CONTENT_HEIGHT = (theme) => theme.trello.boardContentHeight
   const [anchorEl, setAnchorEl] = useState(null)
